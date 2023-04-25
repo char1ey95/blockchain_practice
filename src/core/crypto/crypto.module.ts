@@ -2,8 +2,14 @@ import { Hash } from 'types/block'
 import cryptojs from 'crypto-js'
 import merkle from "merkle"
 import { TransactionData, TransactionRow } from '@core/transaction/transaction.interface'
+import { BlockInfo } from '@core/block/block.interface'
 
 class CryptoModule {
+
+    createBlockHash(data: BlockInfo) {
+        // data => object => sort => string => SHA256
+    }
+
     SHA256(data: string): Hash {
         const hash: Hash = cryptojs.SHA256(data).toString()
         return hash as Hash
@@ -36,8 +42,8 @@ class CryptoModule {
     }
 
     merkleRoot(data: TransactionData) {
-        if(data instanceof TransactionRow){
-            
+        if (data instanceof TransactionRow) {
+
         } else {
             // npm install merkle
             // sync는 여러가지 배열의 값을 이용해서 연산

@@ -1,4 +1,5 @@
 import { GENESIS } from '@constants/block.constants'
+import { BlockInfo } from '@core/block/block.interface'
 import CryptoModule from '@core/crypto/crypto.module'
 
 describe('CryptoModule', () => {
@@ -15,6 +16,24 @@ describe('CryptoModule', () => {
             // hello world => 16진수 내용으로 뽑히게
             const result = cryptoModule.SHA256(data)
             expect(result.length).toBe(64)
+        })
+
+        it('SHA256에서 blockinfo 데이터(객체)로 암호화가 진행되는가', () => {
+            
+            // blockinfo를 넣기전에 data속성을 빼기
+            const blockinfo: BlockInfo = {
+                version: GENESIS.version,
+                height: GENESIS.height,
+                timestamp: GENESIS.timestamp,
+                previousHash: GENESIS.previousHash,
+                merkleRoot: GENESIS.merkleRoot,
+                nonce: GENESIS.nonce,
+                difficulty: GENESIS.difficulty,
+            }
+            
+            // 객체 -> blockinfo -> data
+            const hash = cryptoModule.SHA256(blockinfo)
+            expect(hash).toHaveLength(64)
         })
     })
 
