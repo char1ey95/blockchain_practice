@@ -21,7 +21,6 @@ describe('CryptoModule', () => {
         it('이진데이터로 잘 변경되는가?', () => {
             const data = 'hash'
             const hash = cryptoModule.SHA256(data)
-            
             const binary = cryptoModule.hexToBinary(hash)
             expect(binary.length).toBe(256)
         })
