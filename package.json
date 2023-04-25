@@ -27,7 +27,7 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "moduleNameMapper": {
-        "^@(constants)/(.+)$": "<rootDir>/src/$1/$2"
+        "^@(constants|core)/(.+)$": "<rootDir>/src/$1/$2"
     }
   }
 }
