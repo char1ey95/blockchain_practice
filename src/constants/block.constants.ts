@@ -1,4 +1,6 @@
-const GENESIS = {
+import { IBlock } from 'core/block/block.interface';
+
+export const GENESIS: IBlock = {
     version: '1.0.0',
     height: 1, // Block의 높이
     timestamp: 1231006506,

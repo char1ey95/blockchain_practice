@@ -22,5 +22,12 @@
     "tsc-alias": "^1.8.5",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.0.4"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+        "^@(constants)/(.+)$": "<rootDir>/src/$1/$2"
+    }
   }
 }
