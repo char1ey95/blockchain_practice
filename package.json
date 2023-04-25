@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/jest": "^29.5.1",
+    "crypto-js": "^4.1.1",
     "jest": "^29.5.0"
   },
   "devDependencies": {
@@ -27,7 +28,7 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "moduleNameMapper": {
-        "^@(constants|core)/(.+)$": "<rootDir>/src/$1/$2"
+      "^@(constants|core)/(.+)$": "<rootDir>/src/$1/$2"
     }
   }
 }

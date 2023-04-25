@@ -5,7 +5,7 @@ export const GENESIS: IBlock = {
     height: 1, // Block의 높이
     timestamp: 1231006506,
     previousHash: '0'.repeat(64), // 이전 블록의 해쉬 // 32바이트 64글자
-    merkleRoot: '0'.repeat(64), // transaction // hash값이 될 것(string) // 32바이트 64글자
+    merkleRoot: '0'.repeat(64), // transaction을 가지고 만든다. // hash값이 될 것(string) // 32바이트 64글자
     nonce: 0, // PoW를 할 때 필요한 속성 중 하나
     difficulty: 0, // PoW를 할 때 필요한 속성 중 하나
     hash: '0'.repeat(64), // 다양한 속성값을 이용해서 구성할 것
