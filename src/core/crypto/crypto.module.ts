@@ -1,5 +1,7 @@
 import { Hash } from 'types/block'
 import cryptojs from 'crypto-js'
+import merkle from "merkle"
+import { TransactionData, TransactionRow } from '@core/transaction/transaction.interface'
 
 class CryptoModule {
     SHA256(data: string): Hash {
@@ -31,6 +33,17 @@ class CryptoModule {
             binary += binaryByte
         }
         return binary
+    }
+
+    merkleRoot(data: TransactionData) {
+        if(data instanceof TransactionRow){
+            
+        } else {
+            // npm install merkle
+            // sync는 여러가지 배열의 값을 이용해서 연산
+            // root는 한가지로 만들어줌
+            return merkle('sha256').sync([data]).root()
+        }
     }
 }
 

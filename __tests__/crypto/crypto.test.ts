@@ -1,3 +1,4 @@
+import { GENESIS } from '@constants/block.constants'
 import CryptoModule from '@core/crypto/crypto.module'
 
 describe('CryptoModule', () => {
@@ -23,6 +24,14 @@ describe('CryptoModule', () => {
             const hash = cryptoModule.SHA256(data)
             const binary = cryptoModule.hexToBinary(hash)
             expect(binary.length).toBe(256)
+        })
+    })
+
+    describe('merkleRoot', () => {
+        it('genesis 블럭에 있는 data값에서 merkleroot 구하기', () => {
+            const merkleroot = cryptoModule.merkleRoot(GENESIS.data)
+            console.log(merkleroot)
+            expect(merkleroot).toHaveLength(64) // 좀 더 직관적이다
         })
     })
 })
