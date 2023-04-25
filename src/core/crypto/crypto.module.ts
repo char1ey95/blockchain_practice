@@ -6,8 +6,10 @@ import { BlockInfo } from '@core/block/block.interface'
 
 class CryptoModule {
 
-    createBlockHash(data: BlockInfo) {
+    createBlockHash(data: BlockInfo): string {
         // data => object => sort => string => SHA256
+        const value = Object.values(data).sort().join('')
+        return this.SHA256(value)
     }
 
     SHA256(data: string): Hash {
@@ -49,6 +51,13 @@ class CryptoModule {
             // sync는 여러가지 배열의 값을 이용해서 연산
             // root는 한가지로 만들어줌
             return merkle('sha256').sync([data]).root()
+        }
+    }
+
+    isValidHash(hash: Hash): void {
+        const hexRegExp = /^[0-9a-fA-F]{64}$/
+        if(!hexRegExp.test(hash) || hash.length !== 64) {
+            throw new Error(`해시값(hash : ${hash})이 올바르지 않습니다`)
         }
     }
 }

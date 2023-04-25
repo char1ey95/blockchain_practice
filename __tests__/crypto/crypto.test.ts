@@ -30,9 +30,30 @@ describe('CryptoModule', () => {
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
             }
+
+            const data = cryptoModule.createBlockHash(blockinfo)
             
             // 객체 -> blockinfo -> data
-            const hash = cryptoModule.SHA256(blockinfo)
+            const hash = cryptoModule.SHA256(data)
+            expect(hash).toHaveLength(64)
+        })
+    })
+
+    describe('createBlockHash', () => {
+
+        it('createBlockHash에서 blockinfo 데이터로 암호화가 진행되는가?', () => {
+            const blockinfo: BlockInfo = {
+                version: GENESIS.version,
+                height: GENESIS.height,
+                timestamp: GENESIS.timestamp,
+                previousHash: GENESIS.previousHash,
+                merkleRoot: GENESIS.merkleRoot,
+                nonce: GENESIS.nonce,
+                difficulty: GENESIS.difficulty,
+            }
+    
+            const hash = cryptoModule.createBlockHash(blockinfo)
+
             expect(hash).toHaveLength(64)
         })
     })
@@ -49,8 +70,30 @@ describe('CryptoModule', () => {
     describe('merkleRoot', () => {
         it('genesis 블럭에 있는 data값에서 merkleroot 구하기', () => {
             const merkleroot = cryptoModule.merkleRoot(GENESIS.data)
-            console.log(merkleroot)
             expect(merkleroot).toHaveLength(64) // 좀 더 직관적이다
+        })
+    })
+
+    describe('isValidHash', () => {
+        it('hash값의 length가 64미만일 경우 에러를 발생시키는가?', () => {
+            const notHash = "63f276c89f94976122ea51f5826d8d45e336e332bd5259f6deedbc2c01be62a"
+            expect(() => {
+                cryptoModule.isValidHash(notHash)
+            }).toThrowError(`해시값(hash : ${notHash})이 올바르지 않습니다`)
+        })
+
+        it('hash값이 올바르지 않을 경우에 에러를 발생시키는가?', () => {
+            const notHash = "63f276c89f94976122ea51f5826d8d45e336e332bd5259f6deedbc2c01be62ag"
+            expect(() => {
+                cryptoModule.isValidHash(notHash)
+            }).toThrowError(`해시값(hash : ${notHash})이 올바르지 않습니다`)
+        })
+
+        it('hash값이 아닐경우에 에러를 발생시키는가?', () => {
+            const notHash = "00000000"
+            expect(() => {
+                cryptoModule.isValidHash(notHash)
+            }).toThrowError(`해시값(hash : ${notHash})이 올바르지 않습니다`)
         })
     })
 })
