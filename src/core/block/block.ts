@@ -8,11 +8,7 @@ export default class Block {
     isValidBlock(block: IBlock): void {
         this.crypto.isValidHash(block.hash)
         const validHash = this.crypto.createBlockHash(block)
-        if (validHash === block.hash) {
-            console.log('성공 : ',validHash, block.hash)
-        } else {
-            console.log('실패 : ',validHash, block.hash)
-        }
+        if (validHash !== block.hash) throw new Error(`블록해시값이 올바르지 않습니다 hash : ${validHash}, ${block.hash}`)
     }
 
     // Block 인스턴스가 생성되면, BlockInfo 모양의 객체를 반환해준다.

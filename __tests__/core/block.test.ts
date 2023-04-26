@@ -33,11 +33,16 @@ describe('Block', () => {
         })
 
         it('블록해시값이 변경된적이 있는가', () => {
-            block.isValidBlock(previousBlock)
+            expect(() => {
+                block.isValidBlock(previousBlock)
+            }).not.toThrowError()
         })
 
         it('블록해시값이 올바르지 않을 때, 에러가 잘 발생하는가', () => {
-
+            previousBlock.hash = "84ffab55c48e36cc480e2fd4c4bb0dc5ee1bb2d41a4f2a78a1533a8bb7df83700"
+            expect(() => {
+                block.isValidBlock(previousBlock)
+            }).toThrowError()
         })
     })
     describe('createBlockInfo', () => {

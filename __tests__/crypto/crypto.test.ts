@@ -1,5 +1,5 @@
 import { GENESIS } from '@constants/block.constants'
-import { BlockInfo } from '@core/block/block.interface'
+import { BlockData, BlockInfo } from '@core/block/block.interface'
 import CryptoModule from '@core/crypto/crypto.module'
 
 describe('CryptoModule', () => {
@@ -17,18 +17,18 @@ describe('CryptoModule', () => {
         })
 
         it('SHA256에서 blockinfo 데이터(객체)로 암호화가 진행되는가', () => {
-            const blockinfo: BlockInfo = {
+            const blockinfo: BlockData = {
                 version: GENESIS.version,
                 height: GENESIS.height,
                 timestamp: GENESIS.timestamp,
                 previousHash: GENESIS.previousHash,
-                // merkleRoot: GENESIS.merkleRoot,
+                merkleRoot: GENESIS.merkleRoot,
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
+                data:"",
             }
 
             const data = cryptoModule.createBlockHash(blockinfo)
-            
             const hash = cryptoModule.SHA256(data)
             expect(hash).toHaveLength(64)
         })
@@ -37,18 +37,18 @@ describe('CryptoModule', () => {
     describe('createBlockHash', () => {
 
         it('createBlockHash에서 blockinfo 데이터로 암호화가 진행되는가?', () => {
-            const blockinfo: BlockInfo = {
+            const blockinfo: BlockData = {
                 version: GENESIS.version,
                 height: GENESIS.height,
                 timestamp: GENESIS.timestamp,
                 previousHash: GENESIS.previousHash,
-                // merkleRoot: GENESIS.merkleRoot,
+                merkleRoot: GENESIS.merkleRoot,
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
+                data:"",
             }
     
             const hash = cryptoModule.createBlockHash(blockinfo)
-
             expect(hash).toHaveLength(64)
         })
     })
