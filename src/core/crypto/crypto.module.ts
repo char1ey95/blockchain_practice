@@ -2,12 +2,13 @@ import { Hash } from 'types/block'
 import cryptojs from 'crypto-js'
 import merkle from "merkle"
 import { TransactionData, TransactionRow } from '@core/transaction/transaction.interface'
-import { BlockInfo } from '@core/block/block.interface'
+import { BlockData } from '@core/block/block.interface'
 
 class CryptoModule {
 
-    createBlockHash(data: BlockInfo): string {
-        const value = Object.values(data).sort().join('')
+    createBlockHash(data: BlockData): string {
+        const { version, height, timestamp, merkleRoot, previousHash, difficulty, nonce } = data
+        const value = `${version}${height}${timestamp}${merkleRoot}${previousHash}${difficulty}${nonce}`
         return this.SHA256(value)
     }
 
@@ -37,7 +38,7 @@ class CryptoModule {
 
     isValidHash(hash: Hash): void {
         const hexRegExp = /^[0-9a-fA-F]{64}$/
-        if(!hexRegExp.test(hash) || hash.length !== 64) {
+        if (!hexRegExp.test(hash) || hash.length !== 64) {
             throw new Error(`해시값(hash : ${hash})이 올바르지 않습니다`)
         }
     }
