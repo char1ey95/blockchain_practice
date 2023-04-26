@@ -29,11 +29,24 @@ class CryptoModule {
     }
 
     merkleRoot(data: TransactionData) {
-        if (data instanceof TransactionRow) {
-
-        } else {
+        if (typeof data === "string") {
             return merkle('sha256').sync([data]).root()
+        } else if (Array.isArray(data)) {
+            const sync = data
+                .filter((v: TransactionRow) => {
+                    if (!v.hash) return false
+                    else this.isValidHash(v.hash)
+                    return true
+                })
+                .map(v => v.hash) as string[]
+
+            return merkle("sha256").sync(sync).root()
         }
+        // if (data instanceof TransactionRow) {
+
+        // } else {
+        //     return merkle('sha256').sync([data]).root()
+        // }
     }
 
     isValidHash(hash: Hash): void {

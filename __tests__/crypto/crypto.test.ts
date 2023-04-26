@@ -25,7 +25,7 @@ describe('CryptoModule', () => {
                 merkleRoot: GENESIS.merkleRoot,
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
-                data:"",
+                data: "",
             }
 
             const data = cryptoModule.createBlockHash(blockinfo)
@@ -45,9 +45,9 @@ describe('CryptoModule', () => {
                 merkleRoot: GENESIS.merkleRoot,
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
-                data:"",
+                data: "",
             }
-    
+
             const hash = cryptoModule.createBlockHash(blockinfo)
             expect(hash).toHaveLength(64)
         })
@@ -66,6 +66,25 @@ describe('CryptoModule', () => {
         it('genesis 블럭에 있는 data값에서 merkleroot 구하기', () => {
             const merkleroot = cryptoModule.merkleRoot(GENESIS.data)
             expect(merkleroot).toHaveLength(64)
+        })
+
+        it('data값이 TranscationRow일 경우에 잘 생성이 되는가?', () => {
+            const data = [
+                { hash: 'DC24B19FB7508611ACD8AD17F401753670CFD8DD1BEBEF9C875125E98D82E3D8' },
+                { hash: 'DC24B19FB7508611ACD8AD17F401753670CFD8DD1BEBEF9C875125E98D82E3D8' }
+            ]
+            const merkleroot = cryptoModule.merkleRoot(data)
+            expect(merkleroot).toHaveLength(64)
+        })
+
+        it('data값이 올바르지 않을 경우 에러가 발생하는가?', () => {
+            const data = [
+                { hash: 'DC24B19FB7508611ACD8AD17F401753670CFD8DD1BEBEF9C875125E98D82E3D8' },
+                { hash: 'DC24B19FB7508611AC8AD17F401753670CFD8DD1BEBEF9C875125E98D82E3D8' }
+            ]
+            expect(() => {
+                cryptoModule.merkleRoot(data)
+            }).toThrowError()
         })
     })
 

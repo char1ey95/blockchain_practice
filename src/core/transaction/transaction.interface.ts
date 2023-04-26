@@ -1,2 +1,4 @@
-export class TransactionRow {}
-export type TransactionData = string | TransactionRow
+export class TransactionRow {
+    hash?: string
+}
+export type TransactionData = string | TransactionRow[]
