@@ -42,11 +42,6 @@ class CryptoModule {
 
             return merkle("sha256").sync(sync).root()
         }
-        // if (data instanceof TransactionRow) {
-
-        // } else {
-        //     return merkle('sha256').sync([data]).root()
-        // }
     }
 
     isValidHash(hash: Hash): void {

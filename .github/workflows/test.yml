@@ -14,4 +14,7 @@ jobs:
               run: npm install
 
             - name: Test
-              run: npm run test
+              run: |
+              echo "통합 테스트 시작"
+              npm run test
+              echo "테스트 완료"
