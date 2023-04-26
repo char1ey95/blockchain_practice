@@ -10,5 +10,8 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
+            - name: Package Download
+              run: npm install
+
             - name: Test
               run: npm run test
