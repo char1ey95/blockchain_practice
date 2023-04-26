@@ -11,3 +11,5 @@ export const GENESIS: IBlock = {
     hash: '63f276c89f94976122ea51f5826d8d45e336e332bd5259f6deedbc2c01be62a8',
     data: "2009년 1월 3일 더 타임스, 은행들의 두번째 구제금융을 앞두고 있는 U.K 재무장관",
 }
+
+export const VERSION = GENESIS.version

@@ -22,7 +22,7 @@ describe('CryptoModule', () => {
                 height: GENESIS.height,
                 timestamp: GENESIS.timestamp,
                 previousHash: GENESIS.previousHash,
-                merkleRoot: GENESIS.merkleRoot,
+                // merkleRoot: GENESIS.merkleRoot,
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
             }
@@ -42,7 +42,7 @@ describe('CryptoModule', () => {
                 height: GENESIS.height,
                 timestamp: GENESIS.timestamp,
                 previousHash: GENESIS.previousHash,
-                merkleRoot: GENESIS.merkleRoot,
+                // merkleRoot: GENESIS.merkleRoot,
                 nonce: GENESIS.nonce,
                 difficulty: GENESIS.difficulty,
             }

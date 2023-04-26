@@ -6,12 +6,12 @@ export class BlockInfo {
     public height!: Height
     public timestamp!: Timestamp
     public previousHash!: Hash
-    public merkleRoot!: Hash
-    public nonce!: number
-    public difficulty!: Difficulty
+    public nonce: number = 0
+    public difficulty: Difficulty = 0
 }
 
 export class BlockData extends BlockInfo {
+    public merkleRoot!: Hash
     public data!: TransactionData
 }
 
