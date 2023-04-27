@@ -3,6 +3,7 @@ import Block from '@core/block/block'
 import { IBlock } from '@core/block/block.interface'
 import WorkProof from '@core/block/workproof/workproof'
 import CryptoModule from '@core/crypto/crypto.module'
+import { TransactionData } from '@core/transaction/transaction.interface'
 
 describe('Block', () => {
     let block: Block
@@ -12,6 +13,20 @@ describe('Block', () => {
     beforeEach(() => {
         crypto = new CryptoModule()
         block = new Block(crypto, workProof)
+    })
+
+    describe('createBlock', () => {
+        let previousBlock: IBlock
+        let data: TransactionData
+        let adjustmentBlock: IBlock
+
+        beforeEach(() => {
+            
+        })
+
+        it('block 데이터가 잘 생성되는가', () => {
+            
+        })
     })
 
     describe('isValidBlock', () => {
