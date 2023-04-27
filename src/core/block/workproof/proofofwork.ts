@@ -8,7 +8,6 @@ class ProofOfWork implements Proof {
     execute(props: ProofOfWorkProps): IBlock {
         const { blockData, adjustmentBlock } = props
         let block: IBlock = { ...blockData, hash: "" }
-
         do {
             block.nonce += 1
             block.timestamp = new Date().getTime()
@@ -17,7 +16,7 @@ class ProofOfWork implements Proof {
 
             block.difficulty = this.getDifficulty(difficultyProps) // method 결과물 넣을 곳
             block.hash = this.crypto.createBlockHash(block)
-        } while (this.crypto.hexToBinary(block.hash).startsWith("0".repeat(block.difficulty)))
+        } while (!this.crypto.hexToBinary(block.hash).startsWith("0".repeat(block.difficulty)))
 
         return block as IBlock
 

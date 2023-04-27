@@ -16,7 +16,8 @@ export default class Block {
                         // 10 번째 블록이랑 비교
                         // 1 2 3 4 5 6 7 8 9 10
                         // 11부터
-        this.workProot.run(blockdata, adjustmentBlock)
+        const newBlock = this.workProot.run(blockdata, adjustmentBlock) 
+        return newBlock
     }
 
     isValidBlock(block: IBlock): void {
