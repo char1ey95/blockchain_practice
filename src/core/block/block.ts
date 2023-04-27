@@ -1,22 +1,26 @@
 import { VERSION } from '@constants/block.constants';
 import { BlockData, BlockInfo, IBlock } from './block.interface';
 import CryptoModule from '@core/crypto/crypto.module';
-import { TransactionData, TransactionRow } from '@core/transaction/transaction.interface';
+import { TransactionData } from '@core/transaction/transaction.interface';
+import WorkProof from './workproof/workproof';
 
 export default class Block {
-    constructor(private readonly crypto: CryptoModule) { }
+    constructor(private readonly crypto: CryptoModule, private readonly workProot: WorkProof) { }
+
+    createBlock(previousBlock: IBlock, data: TransactionData, adjustmentBlock: IBlock) {
+        const blockdata = this.createBlockData(previousBlock, data)
+        this.workProot.run("")
+    }
 
     isValidBlock(block: IBlock): void {
         this.crypto.isValidHash(block.hash)
         const validHash = this.crypto.createBlockHash(block)
-        if (validHash !== block.hash) throw new Error(`블록해시값이 올바르지 않습니다 hash : ${validHash}, ${block.hash}`)
+        if (validHash !== block.hash) throw new Error(`블록해시값이 올바르지 않습니다. hash : ${validHash}, ${block.hash}`)
     }
 
-    // blockData
-    // 1. createBlockInfo  <-- 이전블록
     createBlockData(previousBlock: IBlock, data: TransactionData): BlockData {
         const blockinfo = this.createBlockInfo(previousBlock)
-        if(data instanceof String) {
+        if (data instanceof String) {
             data
         } else if (Array.isArray(data)) {
             data

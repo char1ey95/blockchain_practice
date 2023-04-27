@@ -1,15 +1,17 @@
 import { GENESIS } from '@constants/block.constants'
 import Block from '@core/block/block'
 import { IBlock } from '@core/block/block.interface'
+import WorkProof from '@core/block/workproof/workproof'
 import CryptoModule from '@core/crypto/crypto.module'
 
 describe('Block', () => {
     let block: Block
     let crypto: CryptoModule
+    let workProof: WorkProof
 
     beforeEach(() => {
         crypto = new CryptoModule()
-        block = new Block(crypto)
+        block = new Block(crypto, workProof)
     })
 
     describe('isValidBlock', () => {
