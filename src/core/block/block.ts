@@ -34,7 +34,7 @@ export default class Block {
             data
         }
 
-        return { ...blockinfo, merkleRoot: '', data } as BlockData
+        return { ...blockinfo, merkleRoot: this.crypto.merkleRoot(data), data } as BlockData
     }
 
     createBlockInfo(previousBlock: IBlock): BlockInfo {
