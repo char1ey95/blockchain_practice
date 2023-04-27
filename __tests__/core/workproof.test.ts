@@ -1,0 +1,6 @@
+describe('WorkProof', () => {
+    
+    describe('run', () => {
+
+    })
+})
