@@ -5,10 +5,16 @@ import WorkProof from '@core/block/workproof/workproof'
 import CryptoModule from '@core/crypto/crypto.module'
 
 const crypto = new CryptoModule()
-
 const proofofwork = new ProofOfWork(crypto)
 const workProof = new WorkProof(proofofwork)
 const block = new Block(crypto, workProof)
 
-const block_1 = block.createBlock(GENESIS, 'transaction', GENESIS)
-console.log(block_1)
+const blockArr = [ GENESIS ]
+
+for (let i = 0; i <= 109; i++) {
+    const adjustmentBlockNumber = (i > 19) ? (Math.trunc(i/10) - 1)*10 - 1 : 0
+    blockArr.push(block.createBlock(blockArr[i], 'asdfasdf', blockArr[adjustmentBlockNumber]))
+}
+
+// PoW가 정확히 잘 되는지 한번 검증해보기
+// Test 코드 작성
