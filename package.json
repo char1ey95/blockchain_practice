@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon",
-    "build": "tsc && tsc-alias"
+    "build": "tsc && tsc-alias",
+    "exec":"ts-node --require tsconfig-paths/register src/index.ts"
   },
   "keywords": [],
   "author": "",
