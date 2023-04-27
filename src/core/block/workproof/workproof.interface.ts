@@ -1,5 +1,22 @@
-import { IBlock } from '../block.interface';
+import { Difficulty, Height, Timestamp } from 'types/block';
+import { BlockData, IBlock } from '../block.interface';
+
+export interface ProofOfWorkProps {
+    blockData: BlockData
+    adjustmentBlock: IBlock
+}
+
+export interface DiffucultyProps {
+    height: Height
+    currentTime: Timestamp
+    adjTime: Timestamp
+    difficulty: Difficulty
+}
+
+export interface ProofOfStakeProps { }
+
+export type ProofProps = ProofOfWorkProps | ProofOfStakeProps
 
 export interface Proof {
-    execute(): IBlock
+    execute(props: ProofProps): IBlock
 }
