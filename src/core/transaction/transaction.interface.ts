@@ -8,7 +8,7 @@ export class Sender{
 export class Receipt {
     sender!: Sender
     received!: string
-    amount!: string
+    amount!: number
     signature?: SignatureInput
 }
 

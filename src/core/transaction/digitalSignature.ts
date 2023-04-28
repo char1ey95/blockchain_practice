@@ -5,7 +5,7 @@ import CryptoModule from '@core/crypto/crypto.module'
 
 export default class DigitalSignature {
     private readonly ec = new elliptic.ec('secp256k1')
-    private readonly crypto = new CryptoModule()
+    constructor(private readonly crypto = new CryptoModule()){}
     // 개인키 만들기( 랜덤 32 바이트 )
     createPrivateKey() {
         return randomBytes(32).toString("hex")
@@ -19,7 +19,7 @@ export default class DigitalSignature {
 
     createAccount(publicKey: string) {
         const buffer = Buffer.from(publicKey)
-        const account = buffer.slice(24).toString()
+        const account = buffer.slice(26).toString()
         return account
     }
 
