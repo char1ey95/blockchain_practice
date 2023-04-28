@@ -17,5 +17,11 @@ for (let i = 0; i <= 109; i++) {
     blockArr.push(block.createBlock(blockArr[i], 'asdfasdf', blockArr[adjustmentBlockNumber]))
 }
 
-// PoW가 정확히 잘 되는지 한번 검증해보기
-// Test 코드 작성
+console.log(blockArr[109])
+console.log(crypto.hexToBinary('00000000000000000005608bdc6cb90517df39164856d91b458956b0708bfd6d'))
+console.log('00000000000000000000000000000000000000000000000000000000000000000000000000000'.length)
+
+// const hex = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364140"
+// const hex2 = "0279BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"
+// console.log(Math.pow(10, Math.log10(parseInt(hex, 16))))
+// console.log(parseInt(hex2, 16))

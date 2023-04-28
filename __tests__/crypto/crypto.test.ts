@@ -9,6 +9,13 @@ describe('CryptoModule', () => {
         cryptoModule = new CryptoModule()
     })
 
+    describe('createReceiptHash', () => {
+        it('해쉬화가 되는가', () => {
+            // const hash = cryptoModule.createReceiptHash()
+            
+        })
+    })
+
     describe('SHA256', () => {
         it('SHA256에 인자내용을 평문으로해서 암호화가 되는가', () => {
             const data = '이전 블록을 이용해서 데이터르 만들어야한다.'
