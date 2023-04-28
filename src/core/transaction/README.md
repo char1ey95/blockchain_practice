@@ -18,3 +18,14 @@ https://brunch.co.kr/@nujabes403/13
 대칭 암호화
 
 비대칭 암호화
+
+
+## elliptic 사용방법
+
+- class 로 구현되어있음
+
+- ec라는 메서드 안에 알고리즘을 넣어준다.
+
+```ts
+new elliptic.ec('secp256k1')
+```
