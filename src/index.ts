@@ -6,6 +6,7 @@ import WorkProof from '@core/block/workproof/workproof'
 import CryptoModule from '@core/crypto/crypto.module'
 import DigitalSignature from '@core/transaction/digitalSignature'
 import Transaction from '@core/transaction/transaction'
+import { Receipt, Sender } from '@core/transaction/transaction.interface'
 
 const crypto = new CryptoModule()
 const digitalSignature = new DigitalSignature()
@@ -24,9 +25,19 @@ const account = digitalSignature.createAccount(publicKey)
 const tx = transaction.createCoinbase(account, GENESIS.height)
 
 const block2 = block.createBlock(GENESIS, [tx], GENESIS)
-console.log(block2)
 
+const receipt: Receipt = {
+    sender: {
+        account,
+        publicKey
+    },
+    received: '0'.repeat(40),
+    amount: 30,
+}
 
+// const txin = transaction.createTxIn()
+// const txout = transaction.createTxOut()
+// transaction.createRow()
 
 
 // const blockArr: IBlock[] = [GENESIS]

@@ -7,6 +7,7 @@ import { IBlock } from '@core/block/block.interface'
 import { TransactionRow, TxIn, TxOut } from './transaction.interface'
 import CryptoModule from '@core/crypto/crypto.module'
 import { Hash } from 'types/block'
+import { SignatureInput } from 'elliptic'
 
 // 컴퓨터는 소수점 계산이 어렵기 때문에
 // 1 BTC === 10^18로 구현되어있다.
@@ -34,9 +35,11 @@ class Transaction {
         return this.crypto.SHA256(text)
     }
 
-    createTxIn(txOutIndex: number): TxIn {
+    createTxIn(txOutIndex: number, txOutId?: string, signature?: SignatureInput): TxIn {
         const txIn = new TxIn()
         txIn.txOutIndex = txOutIndex
+        txIn.txOutId = txOutId
+        txIn.signature = signature
         return txIn
     }
 
