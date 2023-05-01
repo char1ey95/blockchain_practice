@@ -28,4 +28,5 @@ export class TransactionRow {
     txOuts!: TxOut[]
     hash?: string
 }
+
 export type TransactionData = string | TransactionRow[]
