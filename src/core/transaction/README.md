@@ -29,3 +29,9 @@ https://brunch.co.kr/@nujabes403/13
 ```ts
 new elliptic.ec('secp256k1')
 ```
+
+## 전자서명
+
+- 온라인 플랫폼에서 사용하는 용어
+- 내가 나임을 증명하는 방법론
+    - 타원곡선
