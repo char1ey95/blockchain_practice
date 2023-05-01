@@ -15,7 +15,7 @@ import { TransactionRow, TxIn, TxOut } from './transaction.interface'
 class Transaction {
     private readonly REWARD = 50
 
-    createTxOut(account: string, amount: number) {
+    createTxOut(account: string, amount: number): TxOut {
         // publicKey => 32바이트(64글자)
         // account => publicKey에서 12바이트 제거 => 20바이트(40글자)
         // account가 40글자가 아니라면, account가 올바르지 않다.
@@ -26,7 +26,7 @@ class Transaction {
         return txout
     }
 
-    createTxIn(txOutIndex: number) {
+    createTxIn(txOutIndex: number): TxIn {
         const txIn = new TxIn()
         txIn.txOutIndex = txOutIndex
         return txIn
