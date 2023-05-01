@@ -44,6 +44,9 @@ describe('Transaction', () => {
             const txout = transaction.createTxOut(account, amount)
 
             const row = transaction.createRow([txin], [txout])
+            console.log(row)
+            expect(row.txIns).toStrictEqual([txin])
+            expect(row.txOuts).toStrictEqual([txout])
         })
 
         it('매개변수 내용이 올바르지 않을 때', () => {
