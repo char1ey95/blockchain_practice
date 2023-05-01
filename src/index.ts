@@ -4,24 +4,39 @@ import { IBlock } from '@core/block/block.interface'
 import ProofOfWork from '@core/block/workproof/proofofwork'
 import WorkProof from '@core/block/workproof/workproof'
 import CryptoModule from '@core/crypto/crypto.module'
+import DigitalSignature from '@core/transaction/digitalSignature'
+import Transaction from '@core/transaction/transaction'
 
 const crypto = new CryptoModule()
+const digitalSignature = new DigitalSignature()
 const proofofwork = new ProofOfWork(crypto)
 const workProof = new WorkProof(proofofwork)
 const block = new Block(crypto, workProof)
+const transaction = new Transaction(crypto)
 
-const blockArr: IBlock[] = [GENESIS]
 
-for (let i = 0; i <= 109; i++) {
-    const adjustmentBlockNumber = (i > 19) ? (Math.trunc(i / 10) - 1) * 10 - 1 : 0
-    blockArr.push(block.createBlock(blockArr[i], 'asdfasdf', blockArr[adjustmentBlockNumber]))
-}
+// 코인베이스
+const privateKey = '6fb6a1482159a4b05a96636d0a390f7be0f29552c1a2edef79e83998221bc261'
+const publicKey = digitalSignature.createPublicKey(privateKey)
+const account = digitalSignature.createAccount(publicKey)
 
-console.log(blockArr[109])
-console.log(crypto.hexToBinary('00000000000000000005608bdc6cb90517df39164856d91b458956b0708bfd6d'))
-console.log('00000000000000000000000000000000000000000000000000000000000000000000000000000'.length)
+// Tx
+const tx = transaction.createCoinbase(account, GENESIS.height)
 
-// const hex = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364140"
-// const hex2 = "0279BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"
-// console.log(Math.pow(10, Math.log10(parseInt(hex, 16))))
-// console.log(parseInt(hex2, 16))
+const block2 = block.createBlock(GENESIS, [tx], GENESIS)
+console.log(block2)
+
+
+
+
+// const blockArr: IBlock[] = [GENESIS]
+
+
+
+// for (let i = 0; i <= 109; i++) {
+//     const adjustmentBlockNumber = (i > 19) ? (Math.trunc(i / 10) - 1) * 10 - 1 : 0
+//     blockArr.push(block.createBlock(blockArr[i], 'asdfasdf', blockArr[adjustmentBlockNumber]))
+// }
+
+// 코인베이스
+// 영수증 --> transaction --> block 생성

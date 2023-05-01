@@ -1,10 +1,13 @@
+import CryptoModule from '@core/crypto/crypto.module'
 import Transaction from '@core/transaction/transaction'
 
 describe('Transaction', () => {
     let transaction: Transaction
+    let crypto: CryptoModule
 
     beforeEach(() => {
-        transaction = new Transaction()
+        crypto = new CryptoModule()
+        transaction = new Transaction(crypto)
     })
 
     describe('createTxOut', () => {
@@ -33,6 +36,7 @@ describe('Transaction', () => {
             expect(txin.txOutIndex).toBe(txOutIndex)
         })
     })
+    
 
     describe('createRow', () => {
         it('transactionRow 만들기', () => {
@@ -44,9 +48,11 @@ describe('Transaction', () => {
             const txout = transaction.createTxOut(account, amount)
 
             const row = transaction.createRow([txin], [txout])
-            console.log(row)
+
             expect(row.txIns).toStrictEqual([txin])
             expect(row.txOuts).toStrictEqual([txout])
+
+            transaction.serializeRow(row)
         })
 
         it('매개변수 내용이 올바르지 않을 때', () => {

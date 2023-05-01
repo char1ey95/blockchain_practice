@@ -24,9 +24,9 @@ export class TxOut {
 }
 
 export class TransactionRow {
-    txIns?: TxIn[]
+    txIns!: TxIn[]
     txOuts!: TxOut[]
-    hash?: string
+    hash?: string // Transaction에 대한 고유한 식별자
 }
 
 export type TransactionData = string | TransactionRow[]
