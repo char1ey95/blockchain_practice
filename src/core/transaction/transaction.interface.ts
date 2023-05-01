@@ -12,7 +12,17 @@ export class Receipt {
     signature?: SignatureInput
 }
 
+export class TxIn {
+
+}
+
+export class TxOut {
+
+}
+
 export class TransactionRow {
+    txIns?: TxIn[]
+    txOuts!: TxOut[]
     hash?: string
 }
 export type TransactionData = string | TransactionRow[]
