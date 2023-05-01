@@ -13,11 +13,14 @@ export class Receipt {
 }
 
 export class TxIn {
-
+    txOutId?:string
+    txOutIndex!: number
+    signature?: SignatureInput
 }
 
 export class TxOut {
-
+    account!: string
+    amount!: number
 }
 
 export class TransactionRow {
