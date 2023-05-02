@@ -15,7 +15,7 @@ const proofofwork = new ProofOfWork(crypto)
 const workProof = new WorkProof(proofofwork)
 const block = new Block(crypto, workProof)
 const transaction = new Transaction(crypto)
-const unspent = new Unspent()
+const unspent = new Unspent(transaction)
 
 // 제네시스
 
@@ -45,19 +45,24 @@ const receipt: Receipt = {
     },
     received: '0'.repeat(40),
     amount: 60,
-    signature:'0000'
+    signature: '0000'
 }
 
-const myutxo = unspent.me(account)
-console.log(myutxo)
+const flag = unspent.isAmount(account, receipt.amount)
 
-const totalAmount = unspent.getAmount(myutxo)
-console.log(totalAmount, receipt.amount)
-
-if(unspent.isAmount(totalAmount, receipt.amount)) console.log('잔액부족')
+if (flag) console.log('잔액부족')
 
 // TxIn
-const txin1 = transaction.createTxIn(1, '', receipt.signature)
+// 미사용객체에서부터 만들어진것 ==> unspent
+// unspent.getUnspentTxPool()에서부터 sender 입장에서 보낼 미사용 객체를 뽑아야한다.
+// 보낼사람의 미사용객체 뽑기
+// 내가 보낼 amount값이랑 얼추 비슷한 금액을 만들어야함
+
+// 세욱 10, 10
+// getInput()
+
+const txin1 = unspent.getInput(receipt)
+const txout1 = unspent.getOutput()
 
 // TxOut
 // 현재 보내는 사람은 50
@@ -65,9 +70,9 @@ const txin1 = transaction.createTxIn(1, '', receipt.signature)
 // 보내는 사람의 잔액은 20
 // sender 총 수량  - amount
 
-const txout_sender = transaction.createTxOut(receipt.sender.account, 50 - receipt.amount)
-const txout_received = transaction.createTxOut(receipt.received, receipt.amount)
-const tx1 = transaction.createRow([txin1], [txout_sender, txout_received])
+// const txout_sender = transaction.createTxOut(receipt.sender.account, 50 - receipt.amount)
+// const txout_received = transaction.createTxOut(receipt.received, receipt.amount)
+const tx1 = transaction.createRow(txin1, txout1)
 
 const tx2 = transaction.create(receipt)
 
