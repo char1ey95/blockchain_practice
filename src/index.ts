@@ -26,8 +26,7 @@ const account = digitalSignature.createAccount(publicKey)
 
 // Tx
 const coinbase2 = transaction.createCoinbase(account, GENESIS.height)
-const unspentTxOuts = unspent.createUTXO(coinbase2)
-// console.log(unspentTxOuts)
+unspent.createUTXO(coinbase2)
 const block2 = block.createBlock(GENESIS, [coinbase2], GENESIS)
 
 // console.log(block2)
@@ -45,14 +44,17 @@ const receipt: Receipt = {
         publicKey
     },
     received: '0'.repeat(40),
-    amount: 30,
+    amount: 60,
     signature:'0000'
 }
 
 const myutxo = unspent.me(account)
 console.log(myutxo)
+
 const totalAmount = myutxo.reduce((acc, utxo) => acc + utxo.amount, 0)
-console.log(totalAmount)
+console.log(totalAmount, receipt.amount)
+
+if(totalAmount < receipt.amount) console.log('잔액부족')
 
 // TxIn
 const txin1 = transaction.createTxIn(1, '', receipt.signature)
