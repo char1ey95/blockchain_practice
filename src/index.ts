@@ -44,7 +44,7 @@ const receipt: Receipt = {
         publicKey
     },
     received: '0'.repeat(40),
-    amount: 60,
+    amount: 30,
     signature: '0000'
 }
 
@@ -62,19 +62,14 @@ if (flag) console.log('잔액부족')
 // getInput()
 
 const txin1 = unspent.getInput(receipt)
-const txout1 = unspent.getOutput()
-
-// TxOut
-// 현재 보내는 사람은 50
-// 받는 사람은 30
-// 보내는 사람의 잔액은 20
-// sender 총 수량  - amount
-
-// const txout_sender = transaction.createTxOut(receipt.sender.account, 50 - receipt.amount)
-// const txout_received = transaction.createTxOut(receipt.received, receipt.amount)
+const txout1 = unspent.getOutput(receipt)
 const tx1 = transaction.createRow(txin1, txout1)
+// unspent.createUTXO(tx1)
+// console.log(unspent.getUnspentTxPool())
 
 const tx2 = transaction.create(receipt)
+// unspent.createUTXO(tx2)
+// console.log(unspent.getUnspentTxPool())
 
 const coinbase3 = transaction.createCoinbase(account, block2.height)
 const block3 = block.createBlock(block2, [coinbase3, tx1, tx2], GENESIS)

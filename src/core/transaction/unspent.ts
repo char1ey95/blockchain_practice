@@ -1,13 +1,25 @@
 import Transaction from './transaction'
-import { Receipt, TransactionRow, TxOut, UnspentTxOut, UnspentTxOutPool } from './transaction.interface'
+import { Receipt, TransactionRow, TxIn, TxOut, UnspentTxOut, UnspentTxOutPool } from './transaction.interface'
 
 class Unspent {
     private readonly unspentTxOuts: UnspentTxOutPool = []
     constructor(private readonly transaction: Transaction) { }
 
-    getUnspentTxOuts() {
+    getUnspentTxPool() {
         return this.unspentTxOuts
     }
+
+    // delete(txin: TxIn) {
+    //     // txoutid, txoutindex
+
+    //     // findIndex : 배열의 요소안에 특정한 요소들이 같은 것을 알고싶다. 리턴값은 인덱스(number)
+    //     // 배열 인덱스를 찾는다
+    //     const index = this.unspentTxOuts.findIndex((utxo) => {
+    //         return utxo.txOutId === txin.txOutId && utxo.txOutIndex === txin.txOutIndex
+    //     })
+    //     // splice를 이용해서 자른다
+    //     this.unspentTxOuts.splice(index)
+    // }
 
     createUTXO(transaction: TransactionRow): void {
         const { hash, txOuts } = transaction
@@ -15,6 +27,10 @@ class Unspent {
 
         // txOut을 가지고 미사용 트랜잭션 객체를 만드는데
         // txouts의 객수가 n 개
+
+        // transaction in 삭제
+        // transaction.txIns.forEach((v) => this.delete(v))
+        // transaction out 생성
 
         const newUnspentTxOut = txOuts.map((txout: TxOut, index: number) => {
             const unspentTxOut = new UnspentTxOut()
@@ -64,6 +80,22 @@ class Unspent {
     getOutput(receipt: Receipt) {
         // me 실행
         // createUTXO와 비슷한 로직
+        // 예외 1: 코인베이스
+        // 예외 2: 총액과 출금액이 같을 때
+        const { sender: { account }, received, amount } = receipt
+        const txOuts = []
+
+        const myUnspentTxOuts = this.me(account)
+        const totalAmount = this.getAmount(myUnspentTxOuts)
+        const received_txout = this.transaction.createTxOut(received, amount)
+        txOuts.push(received_txout)
+
+        if (totalAmount - amount > 0) {
+            const sender_txout = this.transaction.createTxOut(account, totalAmount - amount)
+            txOuts.push(sender_txout)
+        }
+
+        return txOuts
     }
 }
 
