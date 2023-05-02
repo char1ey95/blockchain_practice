@@ -51,10 +51,10 @@ const receipt: Receipt = {
 const myutxo = unspent.me(account)
 console.log(myutxo)
 
-const totalAmount = myutxo.reduce((acc, utxo) => acc + utxo.amount, 0)
+const totalAmount = unspent.getAmount(myutxo)
 console.log(totalAmount, receipt.amount)
 
-if(totalAmount < receipt.amount) console.log('잔액부족')
+if(unspent.isAmount(totalAmount, receipt.amount)) console.log('잔액부족')
 
 // TxIn
 const txin1 = transaction.createTxIn(1, '', receipt.signature)

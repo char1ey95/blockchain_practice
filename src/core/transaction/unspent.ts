@@ -31,6 +31,15 @@ class Unspent {
         const myUnspantTxOuts = this.unspentTxOuts.filter(utxo => (utxo.account = account))
         return myUnspantTxOuts
     }
+
+    getAmount(myUnspentTxOuts: UnspentTxOut[]) {
+        return myUnspentTxOuts.reduce((acc, utxo) => acc + utxo.amount, 0)
+    }
+
+    isAmount(currentAmount: number, targetAmount: number) {
+        if (currentAmount < targetAmount) return true
+        return false
+    }
 }
 
 export default Unspent
