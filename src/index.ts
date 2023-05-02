@@ -7,6 +7,7 @@ import CryptoModule from '@core/crypto/crypto.module'
 import DigitalSignature from '@core/transaction/digitalSignature'
 import Transaction from '@core/transaction/transaction'
 import { Receipt, Sender } from '@core/transaction/transaction.interface'
+import Unspent from '@core/transaction/unspent'
 
 const crypto = new CryptoModule()
 const digitalSignature = new DigitalSignature()
@@ -14,6 +15,7 @@ const proofofwork = new ProofOfWork(crypto)
 const workProof = new WorkProof(proofofwork)
 const block = new Block(crypto, workProof)
 const transaction = new Transaction(crypto)
+const unspent = new Unspent()
 
 // 제네시스
 
@@ -24,9 +26,11 @@ const account = digitalSignature.createAccount(publicKey)
 
 // Tx
 const coinbase2 = transaction.createCoinbase(account, GENESIS.height)
+const unspentTxOuts = unspent.createUTXO(coinbase2)
+// console.log(unspentTxOuts)
 const block2 = block.createBlock(GENESIS, [coinbase2], GENESIS)
 
-console.log(block2)
+// console.log(block2)
 
 // #3
 // 이전블록      : 높이가 2인 블록
@@ -44,6 +48,11 @@ const receipt: Receipt = {
     amount: 30,
     signature:'0000'
 }
+
+const myutxo = unspent.me(account)
+console.log(myutxo)
+const totalAmount = myutxo.reduce((acc, utxo) => acc + utxo.amount, 0)
+console.log(totalAmount)
 
 // TxIn
 const txin1 = transaction.createTxIn(1, '', receipt.signature)
@@ -63,7 +72,7 @@ const tx2 = transaction.create(receipt)
 const coinbase3 = transaction.createCoinbase(account, block2.height)
 const block3 = block.createBlock(block2, [coinbase3, tx1, tx2], GENESIS)
 
-console.log(block3)
+// console.log(block3)
 
 // sender <-- 20 + 50
 // receiver <-- 30

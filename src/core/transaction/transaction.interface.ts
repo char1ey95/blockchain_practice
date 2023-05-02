@@ -29,4 +29,14 @@ export class TransactionRow {
     hash?: string // Transaction에 대한 고유한 식별자
 }
 
+export class UnspentTxOut {
+    txOutId!: string
+    txOutIndex!: number
+    account!: string
+    amount!: number
+}
+
 export type TransactionData = string | TransactionRow[]
+
+export type UnspentTxOutPool = UnspentTxOut[]
+export type TransactionPool = TransactionRow[]
