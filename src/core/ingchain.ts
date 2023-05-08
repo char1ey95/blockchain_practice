@@ -1,12 +1,14 @@
 import Block from './block/block';
 import Chain from './chain/chain';
 import Transaction from './transaction/transaction';
+import Unspent from './transaction/unspent';
 
 class Ingchain {
     constructor(
         private readonly chain: Chain,
         private readonly block: Block,
-        private readonly transaction: Transaction
+        private readonly transaction: Transaction,
+        private readonly upspent: Unspent
     ) { }
 
     mineBlock(account: string) {
@@ -25,7 +27,11 @@ class Ingchain {
 
     sendTransaction() { }
 
-    getBalance() { }
+    getBalance(account: string): number {
+        const myUnspentTxOuts = this.upspent.me(account)
+        const balance = this.upspent.getAmount(myUnspentTxOuts)
+        return balance
+    }
 }
 
 export default Ingchain
