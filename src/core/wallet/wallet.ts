@@ -5,7 +5,7 @@ class Wallet {
     private readonly accounts: Accounts[] = []
     constructor(private readonly digitalSignature: DigitalSignature) { }
 
-    create():Accounts {
+    public create():Accounts {
         const privateKey = this.digitalSignature.createPrivateKey()
         const publicKey = this.digitalSignature.createPublicKey(privateKey)
         const account = this.digitalSignature.createAccount(publicKey)
@@ -20,7 +20,7 @@ class Wallet {
         return accounts
     }
 
-    set(privateKey: string) {
+    public set(privateKey: string) {
         const publicKey = this.digitalSignature.createPublicKey(privateKey)
         const account = this.digitalSignature.createAccount(publicKey)
 
@@ -34,15 +34,20 @@ class Wallet {
         return accounts
     }
 
-    getAccounts() { }
+    public getAccounts() {
+        const accounts = this.accounts.map((v) => v.account)
+        return accounts
+    }
 
-    getPrivate() { }
+    private getPrivate() {
 
-    receipt() { }
+    }
 
-    sign() { }
+    public receipt() { }
 
-    verify() { }
+    public sign() { }
+
+    public verify() { }
 }
 
 export default Wallet
