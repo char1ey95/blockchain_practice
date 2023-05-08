@@ -45,12 +45,11 @@ class Wallet {
 
     public receipt(received: string, amount: number) {
         const { account, publicKey, privateKey } = this.accounts[0]
-        
+
         const sender = {
             account,
             publicKey
         }
-
 
         const receipt = this.digitalSignature.sign(privateKey, {
             sender,
@@ -61,7 +60,9 @@ class Wallet {
         return receipt
     }
 
-    public sign() { }
+    public sign() {
+        
+    }
 
     public verify() { }
 }
