@@ -1,6 +1,6 @@
 import { Receipt } from '@core/wallet/wallet.interface'
 import Transaction from './transaction'
-import { TransactionRow, TxIn, TxOut, UnspentTxOut, UnspentTxOutPool } from './transaction.interface'
+import { TransactionData, TransactionRow, TxIn, TxOut, UnspentTxOut, UnspentTxOutPool } from './transaction.interface'
 import { SignatureInput } from 'elliptic'
 
 class Unspent {
@@ -22,6 +22,41 @@ class Unspent {
     //     // splice를 이용해서 자른다
     //     this.unspentTxOuts.splice(index)
     // }
+
+    create(hash: string) {
+        return (txout: TxOut, txOutIndex: number) => {
+            const { amount, account } = txout
+            this.unspentTxOuts.push({
+                txOutId: hash,
+                txOutIndex,
+                account,
+                amount
+            })
+        }
+    }
+
+    delete(txin: TxIn) {
+        const { txOutId, txOutIndex } = txin
+        const index = this.unspentTxOuts.findIndex((unspentTxOuts) => {
+            return unspentTxOuts.txOutId === txOutId && unspentTxOuts.txOutIndex === txOutIndex
+        })
+
+        if(index !== -1) this.unspentTxOuts.splice(index, 1)
+    }
+
+    sync(transactions: TransactionData){
+        if(typeof transactions === 'string') return
+
+        transactions.forEach(this.update.bind(this))
+    }
+
+    update(transaction: TransactionRow): void {
+        const { txIns, txOuts, hash } = transaction
+        if (!hash) throw new Error('Hash 값이 존재하지 않습니다.')
+
+        txOuts.forEach(this.create(hash))
+        txIns.forEach(this.delete.bind(this))
+    }
 
     createUTXO(transaction: TransactionRow): void {
         const { hash, txOuts } = transaction
@@ -101,7 +136,7 @@ class Unspent {
         if (balance - amount > 0) {
             txouts.push({ account: sender, amount: balance })
         }
-        
+
         return txouts
 
         // me 실행

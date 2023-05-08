@@ -22,6 +22,9 @@ class Ingchain {
 
         console.info(`블럭이 생성되었습니다.`)
 
+        this.upspent.sync(newBlock.data)
+        // Block 생성이 되었다는건 block.data TransactionData
+        console.log(this.upspent.getUnspentTxPool())
         return this.chain.latestBlock()
     }
 
