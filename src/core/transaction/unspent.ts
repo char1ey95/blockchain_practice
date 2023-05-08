@@ -1,9 +1,11 @@
+import { Receipt } from '@core/wallet/wallet.interface'
 import Transaction from './transaction'
-import { Receipt, TransactionRow, TxIn, TxOut, UnspentTxOut, UnspentTxOutPool } from './transaction.interface'
+import { TransactionData, TransactionRow, TxIn, TxOut, UnspentTxOut, UnspentTxOutPool } from './transaction.interface'
+import { SignatureInput } from 'elliptic'
 
 class Unspent {
     private readonly unspentTxOuts: UnspentTxOutPool = []
-    constructor(private readonly transaction: Transaction) { }
+    constructor() { }
 
     getUnspentTxPool() {
         return this.unspentTxOuts
@@ -20,6 +22,41 @@ class Unspent {
     //     // splice를 이용해서 자른다
     //     this.unspentTxOuts.splice(index)
     // }
+
+    create(hash: string) {
+        return (txout: TxOut, txOutIndex: number) => {
+            const { amount, account } = txout
+            this.unspentTxOuts.push({
+                txOutId: hash,
+                txOutIndex,
+                account,
+                amount
+            })
+        }
+    }
+
+    delete(txin: TxIn) {
+        const { txOutId, txOutIndex } = txin
+        const index = this.unspentTxOuts.findIndex((unspentTxOuts) => {
+            return unspentTxOuts.txOutId === txOutId && unspentTxOuts.txOutIndex === txOutIndex
+        })
+
+        if(index !== -1) this.unspentTxOuts.splice(index, 1)
+    }
+
+    sync(transactions: TransactionData){
+        if(typeof transactions === 'string') return
+
+        transactions.forEach(this.update.bind(this))
+    }
+
+    update(transaction: TransactionRow): void {
+        const { txIns, txOuts, hash } = transaction
+        if (!hash) throw new Error('Hash 값이 존재하지 않습니다.')
+
+        txOuts.forEach(this.create(hash))
+        txIns.forEach(this.delete.bind(this))
+    }
 
     createUTXO(transaction: TransactionRow): void {
         const { hash, txOuts } = transaction
@@ -60,42 +97,66 @@ class Unspent {
         return false
     }
 
-    getInput(receipt: Receipt) {
-        const { sender: { account }, amount } = receipt
-        const myUnspantTxOuts = this.me(account)
-
+    getInput(myUnspantTxOuts: UnspentTxOut[], receiptAmount: number, signature: SignatureInput) {
         let targetAmount = 0
-        let txins = []
-        for (const unspentTxOut of myUnspantTxOuts) {
-            targetAmount += unspentTxOut.amount
-            const txin = this.transaction.createTxIn(unspentTxOut.txOutIndex, unspentTxOut.txOutId, receipt.signature)
-            txins.push(txin)
-            if (targetAmount >= amount) break
-            // if(targetAmount < amount) continue
-        }
+
+        const txins = myUnspantTxOuts.reduce((acc: TxIn[], unspentTxOut: UnspentTxOut) => {
+            const { amount, txOutId, txOutIndex } = unspentTxOut
+            if (targetAmount >= amount) return acc
+            targetAmount += amount
+            acc.push({ txOutIndex, txOutId, signature })
+            return acc
+        }, [] as TxIn[])
+
+        // const { sender: { account }, amount } = receipt
+        // const myUnspantTxOuts = this.me(account)
+
+        // let targetAmount = 0
+        // let txins = []
+        // for (const unspentTxOut of myUnspantTxOuts) {
+        //     targetAmount += unspentTxOut.amount
+        //     const txin = this.transaction.createTxIn(unspentTxOut.txOutIndex, unspentTxOut.txOutId, receipt.signature)
+        //     txins.push(txin)
+        //     if (targetAmount >= amount) break
+        //     // if(targetAmount < amount) continue
+        // }
 
         return txins
     }
 
-    getOutput(receipt: Receipt) {
+
+    // 보내는 사람 주소, 보낼 금액, 나의 주소, 나의 금액
+    getOutput(received: string, amount: number, sender: string, balance: number) {
+        // 내가 가지고 있는 자산에서
+        // 보낼 금액을 뻇을때
+        // 0 이상일 경우에는 잔돈을
+        const txouts: TxOut[] = []
+        txouts.push({ account: received, amount })
+
+        if (balance - amount > 0) {
+            txouts.push({ account: sender, amount: balance })
+        }
+
+        return txouts
+
         // me 실행
         // createUTXO와 비슷한 로직
         // 예외 1: 코인베이스
         // 예외 2: 총액과 출금액이 같을 때
-        const { sender: { account }, received, amount } = receipt
-        const txOuts = []
+        // const { sender: { account }, received, amount } = receipt
+        // const txOuts = []
 
-        const myUnspentTxOuts = this.me(account)
-        const totalAmount = this.getAmount(myUnspentTxOuts)
-        const received_txout = this.transaction.createTxOut(received, amount)
-        txOuts.push(received_txout)
+        // const myUnspentTxOuts = this.me(account)
+        // const totalAmount = this.getAmount(myUnspentTxOuts)
+        // const received_txout = this.transaction.createTxOut(received, amount)
+        // txOuts.push(received_txout)
 
-        if (totalAmount - amount > 0) {
-            const sender_txout = this.transaction.createTxOut(account, totalAmount - amount)
-            txOuts.push(sender_txout)
-        }
+        // if (totalAmount - amount > 0) {
+        //     const sender_txout = this.transaction.createTxOut(account, totalAmount - amount)
+        //     txOuts.push(sender_txout)
+        // }
 
-        return txOuts
+        // return txOuts
     }
 }
 

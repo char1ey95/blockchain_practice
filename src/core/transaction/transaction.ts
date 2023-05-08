@@ -1,7 +1,8 @@
-import { Receipt, TransactionRow, TxIn, TxOut } from './transaction.interface'
+import { TransactionRow, TxIn, TxOut } from './transaction.interface'
 import CryptoModule from '@core/crypto/crypto.module'
 import { Hash } from 'types/block'
 import { SignatureInput } from 'elliptic'
+import { Receipt } from '@core/wallet/wallet.interface'
 
 class Transaction {
     private readonly REWARD = 50
