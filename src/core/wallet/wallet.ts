@@ -20,7 +20,19 @@ class Wallet {
         return accounts
     }
 
-    set(privateKey: string) { }
+    set(privateKey: string) {
+        const publicKey = this.digitalSignature.createPublicKey(privateKey)
+        const account = this.digitalSignature.createAccount(publicKey)
+
+        const accounts: Accounts = {
+            account,
+            publicKey,
+            privateKey
+        }
+
+        this.accounts.push(accounts)
+        return accounts
+    }
 
     getAccounts() { }
 
