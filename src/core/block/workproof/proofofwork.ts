@@ -29,8 +29,8 @@ class ProofOfWork implements Proof {
         const { height, currentTime, adjTime, difficulty } = props
 
         if (height <= 0) throw new Error('높이가 0이 들어왔습니다.')
-        if (height <= 10) return 0
-        if (height <= 20) return 1
+        if (height < 10) return 0
+        if (height < 20) return 1
 
         if (height % DIFFICULTY_ADJUSTMENT_INTERVAL !== 0) return difficulty
 

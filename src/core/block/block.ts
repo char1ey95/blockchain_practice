@@ -7,7 +7,7 @@ import WorkProof from './workproof/workproof';
 export default class Block {
     constructor(private readonly crypto: CryptoModule, private readonly workProot: WorkProof) { }
 
-    createBlock(previousBlock: IBlock, data: TransactionData, adjustmentBlock: IBlock) {
+    mine(previousBlock: IBlock, data: TransactionData, adjustmentBlock: IBlock) {
         const blockdata = this.createBlockData(previousBlock, data)
         // block hash 만드는 것 => 블럭생성
             // block hash를 만들 때 조건이 붙는다 hex => binary 앞에 0이 몇 개 붙어있는가?
