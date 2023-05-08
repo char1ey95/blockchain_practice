@@ -1,11 +1,11 @@
 import DigitalSignature from './digitalSignature'
-import { Accounts } from './wallet.interface'
+import { Accounts, Receipt } from './wallet.interface'
 
 class Wallet {
     private readonly accounts: Accounts[] = []
     constructor(private readonly digitalSignature: DigitalSignature) { }
 
-    public create():Accounts {
+    public create(): Accounts {
         const privateKey = this.digitalSignature.createPrivateKey()
         const publicKey = this.digitalSignature.createPublicKey(privateKey)
         const account = this.digitalSignature.createAccount(publicKey)
@@ -39,11 +39,27 @@ class Wallet {
         return accounts
     }
 
-    private getPrivate() {
-
+    private getPrivate(account: string): string {
+        return this.accounts.filter((v) => v.account === account)[0].account
     }
 
-    public receipt() { }
+    public receipt(received: string, amount: number) {
+        const { account, publicKey, privateKey } = this.accounts[0]
+        
+        const sender = {
+            account,
+            publicKey
+        }
+
+
+        const receipt = this.digitalSignature.sign(privateKey, {
+            sender,
+            received,
+            amount
+        })
+
+        return receipt
+    }
 
     public sign() { }
 
