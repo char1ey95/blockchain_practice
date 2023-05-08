@@ -11,3 +11,9 @@ export class Receipt {
     amount!: number
     signature?: SignatureInput
 }
+
+export class Accounts {
+    privateKey!: string
+    publicKey!: string
+    account!: string
+}
