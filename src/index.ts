@@ -4,10 +4,10 @@ import { IBlock } from '@core/block/block.interface'
 import ProofOfWork from '@core/block/workproof/proofofwork'
 import WorkProof from '@core/block/workproof/workproof'
 import CryptoModule from '@core/crypto/crypto.module'
-import DigitalSignature from '@core/transaction/digitalSignature'
 import Transaction from '@core/transaction/transaction'
-import { Receipt, Sender } from '@core/transaction/transaction.interface'
 import Unspent from '@core/transaction/unspent'
+import DigitalSignature from '@core/wallet/digitalSignature'
+import { Receipt } from '@core/wallet/wallet.interface'
 
 const crypto = new CryptoModule()
 const digitalSignature = new DigitalSignature()
@@ -52,32 +52,11 @@ const flag = unspent.isAmount(account, receipt.amount)
 
 if (flag) console.log('잔액부족')
 
-// TxIn
-// 미사용객체에서부터 만들어진것 ==> unspent
-// unspent.getUnspentTxPool()에서부터 sender 입장에서 보낼 미사용 객체를 뽑아야한다.
-// 보낼사람의 미사용객체 뽑기
-// 내가 보낼 amount값이랑 얼추 비슷한 금액을 만들어야함
-
-// 세욱 10, 10
-// getInput()
-
 const txin1 = unspent.getInput(receipt)
 const txout1 = unspent.getOutput(receipt)
 const tx1 = transaction.createRow(txin1, txout1)
-// unspent.createUTXO(tx1)
-// console.log(unspent.getUnspentTxPool())
 
-const tx2 = transaction.create(receipt)
-// unspent.createUTXO(tx2)
-// console.log(unspent.getUnspentTxPool())
+unspent.createUTXO(tx1)
 
 const coinbase3 = transaction.createCoinbase(account, block2.height)
-const block3 = block.createBlock(block2, [coinbase3, tx1, tx2], GENESIS)
-
-// console.log(block3)
-
-// sender <-- 20 + 50
-// receiver <-- 30
-
-// 코인베이스
-// 영수증 --> transaction --> block 생성
+// const block3 = block.createBlock(block2, [coinbase3, tx1, tx2], GENESIS)
